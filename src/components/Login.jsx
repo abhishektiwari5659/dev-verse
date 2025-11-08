@@ -1,12 +1,23 @@
+import axios from "axios";
 import { useState } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("Test1234");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ email, password }); 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // prevent page refresh
+
+    try {
+      const res = await axios.post("http://localhost:1234/login", {
+        emailId,
+        password,
+      }, {withCredentials: true});
+
+      console.log("Login successful:", res.data);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -25,13 +36,12 @@ const Login = () => {
               type="email"
               placeholder="you@example.com"
               className="input input-bordered w-full bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-              value={email}
+              value={emailId}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-gray-300 font-medium">Password</span>
@@ -44,10 +54,8 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            
           </div>
 
-         
           <button
             type="submit"
             className="btn btn-primary w-full text-white font-medium tracking-wide hover:scale-[1.02] transition-transform duration-200"
@@ -55,9 +63,6 @@ const Login = () => {
             Sign In
           </button>
 
-          
-
-        
           <p className="text-center text-sm text-gray-400">
             Don’t have an account?{" "}
             <a
