@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constant";
 
 const Login = () => {
-  const [emailId, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("Test1234");
+  const [emailId, setEmail] = useState("abhi@dev.com");
+  const [password, setPassword] = useState("Abhi@123");
+  const [error, setError] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -23,6 +24,7 @@ const Login = () => {
       dispatch(addUser(res.data))
       return navigate("/")
     } catch (error) {
+      setError(error?.response?.data)
       console.error("Login failed:", error);
     }
   };
@@ -62,7 +64,7 @@ const Login = () => {
               required
             />
           </div>
-
+          <p className="text-red-700">{error}</p>
           <button
             type="submit"
             className="btn btn-primary w-full text-white font-medium tracking-wide hover:scale-[1.02] transition-transform duration-200"
