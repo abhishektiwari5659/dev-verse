@@ -23,10 +23,13 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  if(!feed) return
+
+  if(feed.length === 0) return <h1>You have reached at end</h1>
   return (
     <div className="flex justify-center my-10">
       {feed && Array.isArray(feed) && feed.length > 0 ? (
-        <UserCard user={feed[2]} />
+        <UserCard user={feed[0]} />
       ) : (
         <p className="text-gray-400 text-center">Loading feed...</p>
       )}
