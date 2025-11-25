@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { BASE_URL } from "../utils/constant";
 import { removeUserFromFeed } from "../utils/feedSlice";
 
-const SWIPE_THRESHOLD = 120; // px threshold to trigger swipe
+const SWIPE_THRESHOLD = 120;
 
 const UserCard = ({ user }) => {
   const dispatch = useDispatch();
@@ -23,29 +23,26 @@ const UserCard = ({ user }) => {
   } = user;
 
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-15, 15]);
-  const opacity = useTransform(x, [-200, 0, 200], [0.3, 1, 0.3]);
+  const rotate = useTransform(x, [-200, 200], [-12, 12]);
+  const opacity = useTransform(x, [-200, 0, 200], [0.5, 1, 0.5]);
 
-  // MAIN SWIPE HANDLER
+  // Swipe glows
+  const rightGlow = useTransform(x, [0, 150], ["rgba(0,0,0,0)", "rgba(0,255,140,0.25)"]);
+  const leftGlow = useTransform(x, [-150, 0], ["rgba(255,0,0,0.25)", "rgba(0,0,0,0)"]);
+
   const handleSwipe = async (status) => {
     await axios.post(
       BASE_URL + "/request/send/" + status + "/" + _id,
       {},
       { withCredentials: true }
     );
-
     dispatch(removeUserFromFeed(_id));
   };
 
   const handleDragEnd = (_, info) => {
     const offset = info.offset.x;
-    if (offset > SWIPE_THRESHOLD) {
-      // SWIPE RIGHT ❤️
-      handleSwipe("interested");
-    } else if (offset < -SWIPE_THRESHOLD) {
-      // SWIPE LEFT ❌
-      handleSwipe("ignored");
-    }
+    if (offset > SWIPE_THRESHOLD) handleSwipe("interested");
+    else if (offset < -SWIPE_THRESHOLD) handleSwipe("ignored");
   };
 
   return (
@@ -55,45 +52,71 @@ const UserCard = ({ user }) => {
       onDragEnd={handleDragEnd}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.25}
-      className="card bg-gray-800 text-white w-96 shadow-2xl rounded-3xl overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      className="relative w-96 rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing
+      bg-black/50 border border-green-400/20 shadow-[0_0_25px_#00ff8f50] backdrop-blur-xl 
+      transition-all duration-300 hover:scale-[1.02]"
     >
+      {/* SWIPE RIGHT GLOW */}
+      <motion.div
+        style={{ backgroundColor: rightGlow }}
+        className="absolute inset-0 z-10 pointer-events-none rounded-3xl"
+      ></motion.div>
 
-      {/* IMAGE */}
+      {/* SWIPE LEFT GLOW */}
+      <motion.div
+        style={{ backgroundColor: leftGlow }}
+        className="absolute inset-0 z-10 pointer-events-none rounded-3xl"
+      ></motion.div>
+
+      {/* IMAGE AREA */}
       <figure className="relative">
-        <img src={photoUrl} alt="profile" className="w-full h-64 object-cover" />
+        <img
+          src={photoUrl}
+          alt="profile"
+          className="w-full h-96 object-cover object-center select-none rounded-t-3xl"
+        />
 
-        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-gray-900 to-transparent px-4 py-3">
-          <h2 className="text-2xl font-bold">
+        {/* Bottom gradient */}
+        <div className="absolute bottom-0 left-0 w-full px-5 py-4 
+        bg-gradient-to-t from-black/90 to-transparent">
+          
+          <h2 className="text-3xl font-bold tracking-wide text-white drop-shadow-[0_0_6px_#00ff8f]">
             {firstName} {lastName}
           </h2>
 
           {(age || gender) && (
             <p className="text-gray-300 text-sm">
-              {age ? `${age} years old` : ""} {gender ? `• ${gender}` : ""}
+              {age && `${age} yrs`} {gender && `• ${gender}`}
             </p>
           )}
         </div>
       </figure>
 
-      {/* BODY */}
-      <div className="card-body p-5 space-y-4">
+      {/* CARD BODY */}
+      <div className="p-6 space-y-5">
+
+        {/* ABOUT */}
         {about && (
-          <p className="text-gray-300 text-sm leading-relaxed italic border-l-4 border-blue-500 pl-3">
+          <p className="text-green-200/90 text-sm bg-green-400/10 border border-green-400/20 
+          p-3 rounded-xl font-mono leading-relaxed shadow-[0_0_10px_#00ff8f30]">
             “{about}”
           </p>
         )}
 
+        {/* SKILLS */}
         {skills.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">
-              Skills
+            <h3 className="text-sm font-bold text-green-400 mb-2 tracking-wide">
+              SKILLS
             </h3>
 
             <div className="flex flex-wrap gap-2">
               {skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="badge border border-blue-400 text-blue-300 px-3 py-2 text-xs rounded-full"
+                  className="px-3 py-1 text-xs font-semibold rounded-full
+                  border border-green-400/40 bg-green-400/10 text-green-300
+                  shadow-[0_0_8px_#00ff8f40] backdrop-blur-sm"
                 >
                   {skill}
                 </span>
@@ -102,20 +125,24 @@ const UserCard = ({ user }) => {
           </div>
         )}
 
-        {/* BUTTONS (Fallback for non-swipe) */}
-        <div className="flex justify-between items-center gap-5 mt-6">
+        {/* ACTION BUTTONS */}
+        <div className="flex justify-between gap-4 mt-6">
           <button
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full"
             onClick={() => handleSwipe("ignored")}
+            className="flex-1 py-3 rounded-full font-semibold text-red-300
+            border border-red-500/40 bg-red-500/10 
+            hover:bg-red-500/20 hover:shadow-[0_0_12px_#ff3b3b80] transition-all"
           >
-            ❌ Ignore
+            ❌ IGNORE
           </button>
 
           <button
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-full"
             onClick={() => handleSwipe("interested")}
+            className="flex-1 py-3 rounded-full font-semibold text-green-900
+            bg-green-400 shadow-[0_0_15px_#00ff8f80]
+            hover:bg-green-300 transition-all"
           >
-            ❤️ Interested
+            ❤️ INTERESTED
           </button>
         </div>
       </div>

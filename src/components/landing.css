@@ -1,0 +1,149 @@
+/* landing.css - tiny supporting styles for the matrix/typing effect */
+
+/* ensure canvas sits behind content */
+#matrix-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* neon glow for title */
+.glow-neon {
+  color: #b6ffd8;
+  text-shadow:
+    0 0 6px rgba(0, 255, 143, 0.25),
+    0 0 20px rgba(0, 255, 143, 0.15),
+    0 0 40px rgba(0, 255, 143, 0.06);
+}
+
+/* typing animation */
+.typing {
+  width: 26ch;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid rgba(0,255,143,0.7);
+  animation: typing 3.6s steps(24, end), blink 0.8s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 26ch; }
+}
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* small float animation for 3d effect */
+@keyframes floaty {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+.animate-float {
+  animation: floaty 4s ease-in-out infinite;
+}
+
+/* make sure small elements remain crisp on retina */
+svg { shape-rendering: crispEdges; }
+
+.glow-neon-strong {
+  color: #b8ffd8;
+  text-shadow:
+    0 0 12px rgba(0, 255, 143, 0.6),
+    0 0 30px rgba(0, 255, 143, 0.4),
+    0 0 50px rgba(0, 255, 143, 0.2);
+}
+
+
+.glow-neon-strong {
+  color: #b8ffd8;
+  text-shadow:
+    0 0 12px rgba(0, 255, 143, 0.6),
+    0 0 30px rgba(0, 255, 143, 0.4),
+    0 0 50px rgba(0, 255, 143, 0.2);
+}
+
+/* Terminal window styling */
+.terminal-window {
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 255, 143, 0.25);
+  overflow: hidden;
+  box-shadow: 0 0 24px rgba(0, 255, 143, 0.18);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 40, 20, 0.9));
+  border-bottom: 1px solid rgba(0, 255, 143, 0.2);
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+}
+
+.dot-red {
+  background: #ff5f57;
+}
+
+.dot-yellow {
+  background: #febc2e;
+}
+
+.dot-green {
+  background: #28c840;
+}
+
+.terminal-title {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: rgba(226, 255, 237, 0.78);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.terminal-body {
+  padding: 0.8rem 1rem 1rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #c8ffd8;
+}
+
+.terminal-line {
+  color: #d4ffde;
+}
+
+.terminal-line-muted {
+  color: rgba(190, 255, 210, 0.9);
+}
+
+.prompt {
+  color: #00ff8f;
+  margin-right: 0.35rem;
+}
+
+.arg {
+  color: #4de0ff;
+}
+
+/* Tag grid */
+.tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tag-pill {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 143, 0.4);
+  background: rgba(0, 20, 10, 0.8);
+  font-size: 0.65rem;
+  color: #c8ffd8;
+}
