@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-cyber;
+}
+
 
 @keyframes scanline {
   0% { transform: translateX(-100%); opacity: 0; }

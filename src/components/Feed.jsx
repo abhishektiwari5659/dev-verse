@@ -23,8 +23,9 @@ const Feed = () => {
     getFeed();
   }, []);
 
-  // ⭐ STARFIELD BACKGROUND (Black + Neon Green)
-  useEffect(() => {
+// ⭐ STARFIELD BACKGROUND (Black + Neon Green)
+useEffect(() => {
+  const timeout = setTimeout(() => {
     const canvas = document.getElementById("starfield");
     if (!canvas) return;
 
@@ -37,7 +38,6 @@ const Feed = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    // Star settings
     const STAR_COUNT = 160;
     const stars = [];
     const cursor = { x: null, y: null };
@@ -62,14 +62,12 @@ const Feed = () => {
       }
 
       update() {
-        // Parallax drift downward
         this.y += this.speed;
         if (this.y > canvas.height) this.reset();
 
-        // Light twinkle
-        this.size = this.baseSize + Math.sin(Date.now() * this.twinkle) * 0.3;
+        this.size =
+          this.baseSize + Math.sin(Date.now() * this.twinkle) * 0.3;
 
-        // ⭐ Cursor repel effect
         if (cursor.x !== null) {
           const dx = this.x - cursor.x;
           const dy = this.y - cursor.y;
@@ -95,7 +93,6 @@ const Feed = () => {
     for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
 
     const animate = () => {
-      // Black background for maximum contrast
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -110,7 +107,10 @@ const Feed = () => {
     animate();
 
     return () => window.removeEventListener("resize", resize);
-  }, []);
+  }, 50);
+
+  return () => clearTimeout(timeout);
+}, []);
 
   if (!feed) return null;
 

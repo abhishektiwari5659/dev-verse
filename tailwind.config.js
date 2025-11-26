@@ -4,11 +4,15 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        cyber: ["Share Tech Mono", "monospace"],
+      },
+    },
   },
   plugins: [require("daisyui")],
 
   daisyui: {
-    themes: ["light", "dark", "cupcake"], 
+    themes: ["light", "dark", "cupcake"],
   },
-}
+};
