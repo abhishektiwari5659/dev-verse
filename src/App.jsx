@@ -16,6 +16,7 @@ import { BASE_URL } from "./utils/constant";
 import { addUser } from "./utils/userSlice";
 import LandingPage from "./components/LandingPage";
 import { useDispatch } from "react-redux";
+import Premium from "./components/Premium";
 
 // -------------------------------------------------------
 //   AUTH WRAPPER — RESTORES USER FROM COOKIE ON REFRESH
@@ -82,6 +83,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="connections" element={<Connections />} />
             <Route path="request" element={<Requests />} />
+            <Route path="premium" element={<Premium />} />
           </Route>
         </Routes>
       </BrowserRouter>
