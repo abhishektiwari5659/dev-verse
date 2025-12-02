@@ -83,9 +83,6 @@ const Connections = () => {
                   <p className="text-2xl font-bold text-white mt-1 drop-shadow-[0_0_3px_#00ff8f] leading-tight">
                     {connection.firstName} {connection.lastName}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    [ID: {connection._id}]
-                  </p>
                   <hr className="my-3 border-green-400/30" />
                 </div>
 
@@ -120,7 +117,7 @@ const Connections = () => {
                 {skillsArray.length > 0 && (
                   <div>
                     <h4 className="text-xs text-green-400 uppercase tracking-widest">
-                      // SKILLSET_HITS (MAX 5)
+                      // SKILLSET_HITS
                     </h4>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {skillsArray.slice(0, 5).map((skill, i) => (
