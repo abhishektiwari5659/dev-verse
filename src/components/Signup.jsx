@@ -20,6 +20,11 @@ const Signup = () => {
   /* ----------------------------------------------------------------
     MATRIX BACKGROUND CANVAS
   ---------------------------------------------------------------- */
+
+  useEffect(() => {
+  axios.defaults.withCredentials = true;
+}, []);
+
   useEffect(() => {
     const canvas = document.getElementById("matrix-signup");
     if (!canvas) return;
